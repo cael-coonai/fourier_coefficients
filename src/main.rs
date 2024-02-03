@@ -10,8 +10,8 @@ use rayon::prelude::*;
 struct Cli {
   #[arg(short = 'p', long, help = SHOW_PROGRESS_HELP)]
   show_progress: bool,
-  #[arg(long, help = N0_HELP)]
-  n0: Option<usize>,
+  #[arg(long, help = N0_HELP, default_value_t = 1)]
+  n0: usize,
   #[arg(help = N_HELP)]
   n: usize,
   #[arg(required = true, help = INPUT_FILES_HELP)]
@@ -47,20 +47,13 @@ values for f(t) on separate lines.\
 
 fn get_args() -> Result<Args, String> {
   let cli = Cli::parse();
-
-  if let Some(n0) = cli.n0 {
-    if n0 > cli.n {
-      return Err(format!("Value for n0 '{}' greater than n '{}'", n0, cli.n));
-    }
-  }
-
-  let n_min = match cli.n0 {Some(x) => x, None => 1};
-  let n_range = n_min..=cli.n;
+  
+  let n_range = cli.n0..=cli.n;
 
   Ok(Args{
     show_progress: cli.show_progress,
     n_range,
-    n_min,
+    n_min: cli.n0,
     input_files: cli.input_files,
   })
 }
