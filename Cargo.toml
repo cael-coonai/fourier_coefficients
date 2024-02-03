@@ -1,5 +1,8 @@
 [package]
+authors = ["Cael Coonai"]
 name = "fourier_coefficients"
+description = "Calculates Fourier Series coefficients."
+license = "MIT"
 version = "0.1.0"
 edition = "2021"
 
